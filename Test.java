@@ -8,7 +8,7 @@ public class Test {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Tunnel tunnel = new Tunnel();
-		
+	    system.out.println("uidhfds");
 		Runnable leftstrain1 = new Strain(tunnel, "i am the First Leftstrain");
 		Runnable leftstrain2 = new Strain(tunnel, "i am the Second Leftstrain");
 
