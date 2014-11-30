@@ -190,7 +190,7 @@ public class MainActivity<ListViewAdapter> extends ActionBarActivity {
 		switch (item.getItemId()) {
 		case 0:
 			//TODO
-			cursor.moveToPosition(menuInfo.position);
+			cursor.moveToPosition(menuInfo.position);//不懂这个
 			int i = databaseManager.delete(Long.parseLong(cursor.getString(cursor.getColumnIndex("id"))));
 			listAdapter1.removeItem(menuInfo.position);//删除数据
 			sAdapter.notifyDataSetChanged();//通知数据源，数据已经改变，刷新页面。

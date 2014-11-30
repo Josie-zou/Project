@@ -30,6 +30,10 @@
             android:name=".Shownote">
             
         </activity>
+        <activity
+            android:name=".Changenote">
+            
+        </activity>
     </application>
 
 </manifest>

@@ -1,15 +1,22 @@
 package com.example.note1;
 
 import android.R.string;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.TextView;
 
 public class Shownote extends Activity {
 	private TextView textView1;
 	private TextView textView2;
+	private ActionBar actionBar;
+	private String title;
+	private String content;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -17,8 +24,8 @@ public class Shownote extends Activity {
 		setContentView(R.layout.shownote);
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
-		String title = bundle.getString("title");
-		String content = bundle.getString("content");
+		title = bundle.getString("title");
+		content = bundle.getString("content");
 		
 		textView1 = (TextView) findViewById(R.id.titletext1);
 		textView1.setText(title);
@@ -26,6 +33,34 @@ public class Shownote extends Activity {
 		
 		textView2 = (TextView) findViewById(R.id.contenttext1);
 		textView2.setText(content);
+		
+		actionBar = getActionBar();
+		actionBar.show();
 	}
+	
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+	// TODO Auto-generated method stub
+	super.onCreateOptionsMenu(menu);
+	MenuItem menuItem = menu.add(0, 0, 0, "±à¼­");
+	menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+	
+	menuItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+		
+		@Override
+		public boolean onMenuItemClick(MenuItem item) {
+			// TODO Auto-generated method stub
+			Intent intent1 = new Intent(Shownote.this, Changenote.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("title", title);
+			bundle.putString("content", content);
+			intent1.putExtras(bundle);
+			startActivity(intent1);
+			return false;
+		}
+	});
+	
+	return true;
+}
 
 }
