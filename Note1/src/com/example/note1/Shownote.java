@@ -17,6 +17,7 @@ public class Shownote extends Activity {
 	private ActionBar actionBar;
 	private String title;
 	private String content;
+	private String id;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -26,6 +27,7 @@ public class Shownote extends Activity {
 		Bundle bundle = intent.getExtras();
 		title = bundle.getString("title");
 		content = bundle.getString("content");
+		id = bundle.getString("id");
 		
 		textView1 = (TextView) findViewById(R.id.titletext1);
 		textView1.setText(title);
@@ -51,10 +53,14 @@ public boolean onCreateOptionsMenu(Menu menu) {
 		public boolean onMenuItemClick(MenuItem item) {
 			// TODO Auto-generated method stub
 			Intent intent1 = new Intent(Shownote.this, Changenote.class);
+//			intent1.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			Bundle bundle = new Bundle();
 			bundle.putString("title", title);
 			bundle.putString("content", content);
+			bundle.putString("id", id);
 			intent1.putExtras(bundle);
+			intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
 			startActivity(intent1);
 			return false;
 		}

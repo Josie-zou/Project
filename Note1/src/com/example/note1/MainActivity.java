@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.note1.activity.MyactivityManager;
 import com.note1.db.DatabaseManager;
 
 import android.support.v4.widget.DrawerLayout;
@@ -42,6 +43,7 @@ public class MainActivity<ListViewAdapter> extends ActionBarActivity {
 	private SimpleAdapter sAdapter;
 	private ListAdapter1 listAdapter1;
 	private Cursor cursor;
+	private int count;
 	private ArrayList<Map<String, Object>> item = new ArrayList<Map<String, Object>>();
 
 	
@@ -59,6 +61,8 @@ public class MainActivity<ListViewAdapter> extends ActionBarActivity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(MainActivity.this, Addtext.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//				intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent);
 				
 			}
@@ -110,16 +114,23 @@ public class MainActivity<ListViewAdapter> extends ActionBarActivity {
 //				String title = map.get("listtitle");
 //				String content = map.get("listcontent");
 				//不能从控件上获取数据，只能从给控件的map上提取数据
+				
+				//TODO
+				String id1 = item.get(position).get("id").toString();
 				String title = item.get(position).get("title").toString();
 				String content = item.get(position).get("content").toString();
+				
 				Intent intent = new Intent(MainActivity.this, Shownote.class);
 				Bundle bundle = new Bundle();//该类用作携带数据
+				bundle.putString("id", id1);
 				bundle.putString("title", title);
 				bundle.putString("content", content);
 				intent.putExtras(bundle);//附带上额外的数据
 				//通过意图传递数据，然后在修改时根据title寻找该条记录
 			//	intent.putExtra("title", title);//把题目和内容传过去
 			//	intent.putExtra("content", content);
+//				intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			}
 		});
@@ -136,6 +147,7 @@ public class MainActivity<ListViewAdapter> extends ActionBarActivity {
 	//	listView.setOnItemLongClickListener((OnItemLongClickListener) this);
 		itemonLongclick();
 		
+		
 	}
 	
 	
@@ -143,13 +155,13 @@ public class MainActivity<ListViewAdapter> extends ActionBarActivity {
 	public void iniAdapter() {
 		databaseManager.open();
 		cursor = databaseManager.selectAll();
-		int count = cursor.getCount();//获取个数
+		count = cursor.getCount();//获取个数
 		cursor.moveToLast();//让游标移动到最后一条数据，为的是让我们新保存的的东西保存在最开始的选项。
 	//	cursor.moveToFirst();//将游标移动到第一条数据，使用前必须调用
 		
 		for (int i = 0; i < count; i++) {
 			Map<String, Object> data = new HashMap<String, Object>();
-		//	data.put("id", cursor.getInt(cursor.getColumnIndex("id")));
+	        data.put("id", cursor.getInt(cursor.getColumnIndex("id")));
 			data.put("title", cursor.getString(cursor.getColumnIndex("title")));
 			data.put("content", cursor.getString(cursor.getColumnIndex("content")));
 			item.add(data);
@@ -190,7 +202,7 @@ public class MainActivity<ListViewAdapter> extends ActionBarActivity {
 		switch (item.getItemId()) {
 		case 0:
 			//TODO
-			cursor.moveToPosition(menuInfo.position);//不懂这个
+			cursor.moveToPosition(count - menuInfo.position - 1);//因为我是倒叙显示，所以。。。
 			int i = databaseManager.delete(Long.parseLong(cursor.getString(cursor.getColumnIndex("id"))));
 			listAdapter1.removeItem(menuInfo.position);//删除数据
 			sAdapter.notifyDataSetChanged();//通知数据源，数据已经改变，刷新页面。
@@ -224,4 +236,5 @@ public class MainActivity<ListViewAdapter> extends ActionBarActivity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		return super.onOptionsItemSelected(item);
 	}
+	
 }

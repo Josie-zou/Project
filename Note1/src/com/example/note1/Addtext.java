@@ -82,6 +82,10 @@ public class Addtext extends Activity {
 				databaseManager.close();
 				//让它跳回到主页
 				Intent intent = new Intent(Addtext.this, MainActivity.class);
+//				intent.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
+//				intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
 				startActivity(intent);
 				
 				return false;

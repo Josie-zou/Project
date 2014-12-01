@@ -98,6 +98,23 @@ public class DatabaseManager {
 	
 	
 	
+	//ÐÞ¸ÄÊý¾Ý
+	public int update(String id, String title, String content) {
+		int flag = -1;
+		try {
+			ContentValues contentValues = new ContentValues();
+			contentValues.put("title", title);
+			contentValues.put("content", content);
+			String[] id1 = {id};
+			flag = mSQLiteDatabase.update("record", contentValues, "id=?", id1);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return flag;
+	}
+	
+	
 	
 
 	/**
