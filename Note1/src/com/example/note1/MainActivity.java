@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.note1.activity.MyactivityManager;
 import com.note1.db.DatabaseManager;
 
 import android.support.v4.widget.DrawerLayout;
