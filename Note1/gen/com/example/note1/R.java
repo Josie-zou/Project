@@ -1105,7 +1105,7 @@ containing a value of this type.
         public static final int bt3=0x7f05003f;
         public static final int checkbox=0x7f05002d;
         public static final int collapseActionView=0x7f05000d;
-        public static final int contenttext1=0x7f050048;
+        public static final int contenttext1=0x7f050049;
         public static final int default_activity_button=0x7f050028;
         public static final int dialog=0x7f05000e;
         public static final int disableHome=0x7f050008;
@@ -1121,7 +1121,8 @@ containing a value of this type.
         public static final int icon=0x7f05002a;
         public static final int ifRoom=0x7f05000a;
         public static final int image=0x7f050027;
-        public static final int imagelist1=0x7f050049;
+        public static final int imagelist1=0x7f05004a;
+        public static final int img=0x7f050047;
         public static final int listMode=0x7f050001;
         public static final int list_item=0x7f050029;
         public static final int listcontent=0x7f050046;
@@ -1154,7 +1155,7 @@ containing a value of this type.
         public static final int submit_area=0x7f050039;
         public static final int tabMode=0x7f050002;
         public static final int title=0x7f05002b;
-        public static final int titletext1=0x7f050047;
+        public static final int titletext1=0x7f050048;
         public static final int top_action_bar=0x7f050020;
         public static final int up=0x7f050021;
         public static final int useLogo=0x7f050003;

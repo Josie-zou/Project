@@ -112,6 +112,7 @@ public class Changenote extends Activity {
 	        econtent.append("\n");  
 	        Editable editable = econtent.getEditableText();  
 	        int selectionIndex = econtent.getSelectionStart();  
+//	        econtent.setCompoundDrawablesWithIntrinsicBounds(left, top, right, bottom)
 	        spannableString.getSpans(0, spannableString.length(), ImageSpan.class); 
 	        
 	      //将图片添加进EditText中  
