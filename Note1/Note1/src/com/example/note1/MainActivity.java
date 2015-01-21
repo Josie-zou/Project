@@ -74,7 +74,9 @@ public class MainActivity<ListViewAdapter> extends ActionBarActivity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(MainActivity.this, Addvoice.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
+//				startActivityForResult(intent, 4);
 				
 			}
 		});
@@ -86,6 +88,7 @@ public class MainActivity<ListViewAdapter> extends ActionBarActivity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent( MainActivity.this, Addvideo.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 				
 			}
@@ -215,7 +218,8 @@ public class MainActivity<ListViewAdapter> extends ActionBarActivity {
 		return super.onContextItemSelected(item);
 	}
 	 
-	 
+
+
 	 
 	 
 
