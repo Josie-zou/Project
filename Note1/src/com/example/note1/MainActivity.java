@@ -76,6 +76,7 @@ public class MainActivity<ListViewAdapter> extends ActionBarActivity {
 				Intent intent = new Intent(MainActivity.this, Addvoice.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
+//				startActivityForResult(intent, 4);
 				
 			}
 		});
@@ -217,7 +218,8 @@ public class MainActivity<ListViewAdapter> extends ActionBarActivity {
 		return super.onContextItemSelected(item);
 	}
 	 
-	 
+
+
 	 
 	 
 

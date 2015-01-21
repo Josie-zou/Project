@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 import com.note1.db.DatabaseManager;
 
 import android.R.string;
@@ -25,12 +26,16 @@ import android.graphics.Paint.Style;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.method.ScrollingMovementMethod;
 import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class Shownote extends Activity {
@@ -83,11 +88,15 @@ public class Shownote extends Activity {
 //	        取出路径中的后缀
 	        String type = path.substring(path.length() - 3, path.length());
 	        Bitmap rbm = null;
-	        if (type.equals("jpg")) {
+	        if(type.equals("amr")){
+	    		rbm = BitmapFactory.decodeResource(getResources(), R.drawable.record_icon);
+	    		//缩放图片
+		        rbm = resize(rbm,200);
+	    	}
+	        else {
 	        	Bitmap bitmap = null;
 		        bitmap = BitmapFactory.decodeFile(matcher.group());
 		        rbm = resize(bitmap,480);
-		       
 			}
 	        
 	      //为图片添加边框效果
@@ -99,11 +108,11 @@ public class Shownote extends Activity {
 	        textView2.append(ss);
 	        startIndex = matcher.end();
 	        
-	      //用List记录该图片的位置及所在路径，用于单击事件
-//	        Map<String,String> map = new HashMap<String,String>();
-//	        map.put("location", matcher.start()+"-"+matcher.end());
-//	        map.put("path", path);
-//	        imgList.add(map);
+//	      用List记录该图片的位置及所在路径，用于单击事件
+	        Map<String,String> map = new HashMap<String,String>();
+	        map.put("location", matcher.start()+"-"+matcher.end());
+	        map.put("path", path);
+	        imgList.add(map);
 
 	    }
 	    //将最后一个图片之后的文字添加在TextView中 
@@ -213,4 +222,59 @@ public boolean onCreateOptionsMenu(Menu menu) {
 	return true;
 }
 
+class TextClickEvent implements OnClickListener{
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		Spanned s = (Spanned) textView2.getText();
+		ImageSpan[] imageSpans;
+		imageSpans = s.getSpans(0, s.length(), ImageSpan.class);
+		
+		int selectionStart = textView2.getSelectionStart();
+		for(ImageSpan span : imageSpans){
+			
+			int start = s.getSpanStart(span);
+			int end = s.getSpanEnd(span);
+			//找到图片
+			if(selectionStart >= start && selectionStart < end){
+				//Bitmap bitmap = ((BitmapDrawable)span.getDrawable()).getBitmap();
+				//查找当前单击的图片是哪一个图片
+				//System.out.println(start+"-----------"+end);
+				String path = null;
+				for(int i = 0;i < imgList.size();i++){
+					Map map = imgList.get(i);
+					//找到了
+					if(map.get("location").equals(start+"-"+end)){
+						path = imgList.get(i).get("path");
+						break;
+					}
+				}
+				//接着判断当前图片是否是录音，如果为录音，则跳转到试听录音的Activity，如果不是，则跳转到查看图片的界面
+				//录音，则跳转到试听录音的Activity
+				if(path.substring(path.length()-3, path.length()).equals("amr")){
+					Intent intent = new Intent(Shownote.this,Showrecord.class);
+					intent.putExtra("audioPath", path);
+					startActivity(intent);
+				}
+				//图片，则跳转到查看图片的界面
+				else{
+					//有两种方法，查看图片，第一种就是直接调用系统的图库查看图片，第二种是自定义Activity
+					//调用系统图库查看图片
+					/*Intent intent = new Intent(Intent.ACTION_VIEW);
+					File file = new File(path);
+					Uri uri = Uri.fromFile(file);
+					intent.setDataAndType(uri, "image/*");*/
+					//使用自定义Activity
+					Intent intent = new Intent(Shownote.this,Showpicture.class);
+					intent.putExtra("imgPath", path);
+					startActivity(intent);
+				}
+			}
+			
+		
+	}
+
+}
+}
 }

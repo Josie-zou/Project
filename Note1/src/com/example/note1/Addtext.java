@@ -15,6 +15,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 
 
+
 import com.note1.db.DatabaseHelper;
 import com.note1.db.DatabaseManager;
 
@@ -131,11 +132,19 @@ public class Addtext extends Activity {
 				//TODO
 				InsertBitmap(bitmap,480,path);
 			}
-			
+			if (requestCode == 2) {
+				extras = data.getExtras();
+				String path = extras.getString("audio");
+				bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.record_icon);
+				//≤Â»Î¬º“ÙÕº±Í
+				InsertBitmap(bitmap,200,path);
+				
+			}
+			}
 			
 			
 		}
-	}
+	
 
 	private void InsertBitmap(Bitmap bitmap, int S, String imgPath) {
 		// TODO Auto-generated method stub
@@ -234,7 +243,7 @@ public class Addtext extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreateOptionsMenu(menu);
 		MenuItem menuItem = menu.add(0, 0, 0, "save");
-		MenuItem menuItem2 = menu.add(0, 0, 0, "image");
+		MenuItem menuItem2 = menu.add(0, 0, 0, "¬º“Ù");
 
 		menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		menuItem2.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
@@ -278,6 +287,10 @@ public class Addtext extends Activity {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				// TODO Auto-generated method stub
+				Intent intent = new Intent(Addtext.this, Addvoice.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+				startActivityForResult(intent, 2);
 				return false;
 			}
 		});
