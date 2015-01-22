@@ -38,6 +38,10 @@
             android:name=".Changenote">
             
         </activity>
+        <activity
+            android:name=".Showrecord">
+            
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>

@@ -1,7 +1,9 @@
 package com.example.note1;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,6 +30,7 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.Menu;
@@ -48,6 +51,8 @@ public class Changenote extends Activity {
 	private String id;
 	private ActionBar actionBar;
 	private DatabaseManager dManager;
+	//记录editText中的图片，用于单击时判断单击的是那一个图片
+			private List<Map<String,String>> imgList = new ArrayList<Map<String,String>>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +63,7 @@ public class Changenote extends Activity {
 
 		etitle = (EditText) findViewById(R.id.edit1);
 		econtent = (EditText) findViewById(R.id.edit2);
+		econtent.setOnClickListener(new TextClickEvent());
 		button = (Button) findViewById(R.id.addphoto);
 
 		Intent intent = getIntent();
@@ -94,6 +100,11 @@ public class Changenote extends Activity {
 		        rbm = resize(bitmap,480);
 		       
 			}
+	        else {
+	        	rbm = BitmapFactory.decodeResource(getResources(), R.drawable.record_icon);
+	    		//缩放图片
+		        rbm = resize(rbm,200);
+			}
 	        
 	      //为图片添加边框效果
 	        rbm = getBitmapHuaSeBianKuang(rbm);
@@ -105,10 +116,10 @@ public class Changenote extends Activity {
 	        startIndex = matcher.end();
 	        
 	      //用List记录该图片的位置及所在路径，用于单击事件
-//	        Map<String,String> map = new HashMap<String,String>();
-//	        map.put("location", matcher.start()+"-"+matcher.end());
-//	        map.put("path", path);
-//	        imgList.add(map);
+	        Map<String,String> map = new HashMap<String,String>();
+	        map.put("location", matcher.start()+"-"+matcher.end());
+	        map.put("path", path);
+	        imgList.add(map);
 
 	    }
 	    //将最后一个图片之后的文字添加在TextView中 
@@ -189,10 +200,10 @@ public class Changenote extends Activity {
 		//添加图片后自动空出两行 
 		econtent.append("\n");
 		
-		//用List记录该录音的位置及所在路径，用于单击事件
-//        Map<String,String> map = new HashMap<String,String>();
-//        map.put("location", selectionIndex+"-"+(selectionIndex+spannableString.length()));
-//        map.put("path", imgPath);
+//		用List记录该录音的位置及所在路径，用于单击事件
+        Map<String,String> map = new HashMap<String,String>();
+        map.put("location", selectionIndex+"-"+(selectionIndex+spannableString.length()));
+        map.put("path", imgPath);
 //        imgList.add(map);
 	}
 	
@@ -265,7 +276,59 @@ public class Changenote extends Activity {
 	}
 	
 	
-	
+	class TextClickEvent implements OnClickListener{
+
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			Spanned s = (Spanned) econtent.getText();
+			ImageSpan[] imageSpans;
+			imageSpans = s.getSpans(0, s.length(), ImageSpan.class);
+			
+			int selectionStart = econtent.getSelectionStart();
+			for(ImageSpan span : imageSpans){
+				
+				int start = s.getSpanStart(span);
+				int end = s.getSpanEnd(span);
+				//找到图片
+				if(selectionStart >= start && selectionStart < end){
+					//Bitmap bitmap = ((BitmapDrawable)span.getDrawable()).getBitmap();
+					//查找当前单击的图片是哪一个图片
+					//System.out.println(start+"-----------"+end);
+					String path = null;
+					for(int i = 0;i < imgList.size();i++){
+						Map map = imgList.get(i);
+						//找到了
+						if(map.get("location").equals(start+"-"+end)){
+							path = imgList.get(i).get("path");
+							break;
+						}
+					}
+					//接着判断当前图片是否是录音，如果为录音，则跳转到试听录音的Activity，如果不是，则跳转到查看图片的界面
+					//录音，则跳转到试听录音的Activity
+					if(path.substring(path.length()-3, path.length()).equals("amr")){
+						Intent intent = new Intent(Changenote.this,Showrecord.class);
+						intent.putExtra("audioPath", path);
+						startActivity(intent);
+					}
+					//图片，则跳转到查看图片的界面
+					else{
+						//有两种方法，查看图片，第一种就是直接调用系统的图库查看图片，第二种是自定义Activity
+						//调用系统图库查看图片
+						/*Intent intent = new Intent(Intent.ACTION_VIEW);
+						File file = new File(path);
+						Uri uri = Uri.fromFile(file);
+						intent.setDataAndType(uri, "image/*");*/
+						//使用自定义Activity
+						Intent intent = new Intent(Changenote.this,Showpicture.class);
+						intent.putExtra("imgPath", path);
+						startActivity(intent);
+					}
+				}
+			}	
+			
+		}
+	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
