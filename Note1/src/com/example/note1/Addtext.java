@@ -49,8 +49,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 //也是增加一条记录，不过这个主要是用来处理页面的设计的
@@ -58,6 +62,8 @@ public class Addtext extends Activity {
 	private EditText editText2;
 	private EditText editText1;
 	private Button button;
+	private Button buttonsave;
+	private ImageButton buttonrecord;
 	private ListView listView;
 
 	private String titleText = "";
@@ -74,12 +80,15 @@ public class Addtext extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.addtext);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_add);
+		getWindow().setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 		button = (Button) findViewById(R.id.addphoto);
 		editText1 = (EditText) findViewById(R.id.edit1);
 		editText2 = (EditText) findViewById(R.id.edit2);
 		actionBar = getActionBar();
-		actionBar.show();
+//		actionBar.show();
 		databaseManager = new DatabaseManager(this);// 记得别漏了这个
 		// databaseHelper = new DatabaseHelper(this, "1.db3", null, 1);
 		// 按钮的点击事件
@@ -98,6 +107,50 @@ public class Addtext extends Activity {
 
 			}
 		});
+		buttonsave = (Button) findViewById(R.id.save);
+		buttonsave.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				titleText = editText1.getText().toString();
+				contentText = editText2.getText().toString();
+				// databaseManager.open();
+				try {
+					databaseManager.open();
+					databaseManager.insert(titleText, contentText);
+					// databaseManager = databaseHelper.getReadableDatabase();
+					// databaseManager.execSQL("insert into 1 values(null,?,?,null)",new
+					// String[]{titleText, contentText});
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				databaseManager.close();
+				// 让它跳回到主页
+				Intent intent = new Intent(Addtext.this, MainActivity.class);
+				// intent.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
+				// intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+				startActivity(intent);
+				
+			}
+		});
+		
+		buttonrecord = (ImageButton) findViewById(R.id.voice_input);
+		buttonrecord.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(Addtext.this, Addvoice.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+				startActivityForResult(intent, 2);
+			}
+		});
+		
 	}
 
 	@Override
@@ -242,58 +295,58 @@ public class Addtext extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// TODO Auto-generated method stub
 		super.onCreateOptionsMenu(menu);
-		MenuItem menuItem = menu.add(0, 0, 0, "save");
-		MenuItem menuItem2 = menu.add(0, 0, 0, "录音");
-
-		menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		menuItem2.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+////		MenuItem menuItem = menu.add(0, 0, 0, "save");
+//		MenuItem menuItem2 = menu.add(0, 0, 0, "录音");
+////
+////		menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+//		menuItem2.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
 		// 这里是添加记事的按钮
-		menuItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-
-			// TODO
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
+//		menuItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+//
+//			// TODO
+//			@Override
+//			public boolean onMenuItemClick(MenuItem item) {
 				// TODO Auto-generated method stub
-				titleText = editText1.getText().toString();
-				contentText = editText2.getText().toString();
-				// databaseManager.open();
-				try {
-					databaseManager.open();
-					databaseManager.insert(titleText, contentText);
-					// databaseManager = databaseHelper.getReadableDatabase();
-					// databaseManager.execSQL("insert into 1 values(null,?,?,null)",new
-					// String[]{titleText, contentText});
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				databaseManager.close();
-				// 让它跳回到主页
-				Intent intent = new Intent(Addtext.this, MainActivity.class);
-				// intent.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
-				// intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//				titleText = editText1.getText().toString();
+//				contentText = editText2.getText().toString();
+//				// databaseManager.open();
+//				try {
+//					databaseManager.open();
+//					databaseManager.insert(titleText, contentText);
+//					// databaseManager = databaseHelper.getReadableDatabase();
+//					// databaseManager.execSQL("insert into 1 values(null,?,?,null)",new
+//					// String[]{titleText, contentText});
+//				} catch (Exception e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//				databaseManager.close();
+//				// 让它跳回到主页
+//				Intent intent = new Intent(Addtext.this, MainActivity.class);
+//				// intent.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
+//				// intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//
+//				startActivity(intent);
+//
+//				return false;
+//			}
+//		});
 
-				startActivity(intent);
-
-				return false;
-			}
-		});
-
-		// 选择增加图片的菜单按钮
-		menuItem2.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(Addtext.this, Addvoice.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				startActivityForResult(intent, 2);
-				return false;
-			}
-		});
+//		// 选择增加图片的菜单按钮
+//		menuItem2.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+//
+//			@Override
+//			public boolean onMenuItemClick(MenuItem item) {
+//				// TODO Auto-generated method stub
+//				Intent intent = new Intent(Addtext.this, Addvoice.class);
+//				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//				startActivity(intent);
+//				startActivityForResult(intent, 2);
+//				return false;
+//			}
+//		});
 		return true;
 	}
 

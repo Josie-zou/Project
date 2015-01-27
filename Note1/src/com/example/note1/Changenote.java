@@ -76,7 +76,7 @@ public class Changenote extends Activity {
 //		econtent.setText(content);
 
 		actionBar = getActionBar();
-		actionBar.show();
+//		actionBar.show();
 
 		int startIndex = 0;
 		Pattern p = Pattern.compile("/([^\\.]*)\\.\\w{3}");

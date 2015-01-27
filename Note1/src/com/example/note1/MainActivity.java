@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.R.integer;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.view.View.OnCreateContextMenuListener;
+import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -32,7 +34,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-public class MainActivity<ListViewAdapter> extends ActionBarActivity {
+public class MainActivity<ListViewAdapter> extends Activity {
 
 	private Button button1;
 	private Button button2;
@@ -43,18 +45,24 @@ public class MainActivity<ListViewAdapter> extends ActionBarActivity {
 	private ListAdapter1 listAdapter1;
 	private Cursor cursor;
 	private int count;
+//	private ActionBar actionBar;
 	private ArrayList<Map<String, Object>> item = new ArrayList<Map<String, Object>>();
+	private Button buttonadd;
 
 	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.activity_main);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_main);
 		
 		databaseManager = new DatabaseManager(this);//这句话，我漏了很多次。。。。。
-		button1 = (Button)findViewById(R.id.bt1);
-		button1.setOnClickListener(new OnClickListener() {
+//		actionBar = getActionBar();
+//		actionBar.show();
+		buttonadd = (Button) findViewById(R.id.add);
+		buttonadd.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -66,33 +74,47 @@ public class MainActivity<ListViewAdapter> extends ActionBarActivity {
 				
 			}
 		});
-		
-		button2 = (Button) findViewById(R.id.bt2);
-		button2.setOnClickListener( new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(MainActivity.this, Addvoice.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-//				startActivityForResult(intent, 4);
-				
-			}
-		});
-		
-		button3 = (Button) findViewById(R.id.bt3);
-		button3.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent( MainActivity.this, Addvideo.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				
-			}
-		});
+//		button1 = (Button)findViewById(R.id.bt1);
+//		button1.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				Intent intent = new Intent(MainActivity.this, Addtext.class);
+//				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+////				intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//				startActivity(intent);
+//				
+//				
+//			}
+//		});
+//		
+//		button2 = (Button) findViewById(R.id.bt2);
+//		button2.setOnClickListener( new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				Intent intent = new Intent(MainActivity.this, Addvoice.class);
+//				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//				startActivity(intent);
+////				startActivityForResult(intent, 4);
+//				
+//			}
+//		});
+//		
+//		button3 = (Button) findViewById(R.id.bt3);
+//		button3.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				Intent intent = new Intent( MainActivity.this, Addvideo.class);
+//				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//				startActivity(intent);
+//				
+//			}
+//		});
 		listView = (ListView) findViewById(R.id.listv);
 		
 	//	listView.setOnScrollListener((OnScrollListener) this);
@@ -122,7 +144,7 @@ public class MainActivity<ListViewAdapter> extends ActionBarActivity {
 				String title = item.get(position).get("title").toString();
 				String content = item.get(position).get("content").toString();
 				
-				Intent intent = new Intent(MainActivity.this, Shownote.class);
+				Intent intent = new Intent(MainActivity.this, Changenote.class);
 				Bundle bundle = new Bundle();//该类用作携带数据
 				bundle.putString("id", id1);
 				bundle.putString("title", title);
@@ -239,5 +261,7 @@ public class MainActivity<ListViewAdapter> extends ActionBarActivity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		return super.onOptionsItemSelected(item);
 	}
+	
+	
 	
 }

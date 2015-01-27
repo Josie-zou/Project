@@ -32,6 +32,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -40,6 +42,7 @@ public class Addvoice extends Activity {
 	private ActionBar actionBar;
 	private TextView textView;
 	private ImageButton imageButton;
+	private Button buttonsave;
 	private int isRecording;
 	private String filepath;
 	private Timer mTimer;
@@ -51,10 +54,29 @@ public class Addvoice extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.addvoice);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_add);
 		
 		actionBar = getActionBar();
-		actionBar.show();
+//		actionBar.show();
+		
+		buttonsave = (Button) findViewById(R.id.save);
+		buttonsave.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = getIntent();
+				Bundle b = new Bundle();
+				b.putString("audio", filepath);
+				intent.putExtras(b);
+				setResult(RESULT_OK, intent);
+				
+				Addvoice.this.finish();
+				
+			}
+		});
 		
 		textView = (TextView) findViewById(R.id.tv_recordTime);
 		
@@ -66,23 +88,23 @@ public class Addvoice extends Activity {
 @Override
 public boolean onCreateOptionsMenu(Menu menu) {
 	// TODO Auto-generated method stub
-	MenuItem menuItem1 = menu.add(0, 0, 0, "save");
-	menuItem1.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-	menuItem1.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-		
-		@Override
-		public boolean onMenuItemClick(MenuItem item) {
-			// TODO Auto-generated method stub
-			Intent intent = getIntent();
-			Bundle b = new Bundle();
-			b.putString("audio", filepath);
-			intent.putExtras(b);
-			setResult(RESULT_OK, intent);
-			
-			Addvoice.this.finish();
-			return false;
-		}
-	});
+//	MenuItem menuItem1 = menu.add(0, 0, 0, "save");
+//	menuItem1.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+//	menuItem1.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+//		
+//		@Override
+//		public boolean onMenuItemClick(MenuItem item) {
+//			// TODO Auto-generated method stub
+//			Intent intent = getIntent();
+//			Bundle b = new Bundle();
+//			b.putString("audio", filepath);
+//			intent.putExtras(b);
+//			setResult(RESULT_OK, intent);
+//			
+//			Addvoice.this.finish();
+//			return false;
+//		}
+//	});
 	return super.onCreateOptionsMenu(menu);
 
 }

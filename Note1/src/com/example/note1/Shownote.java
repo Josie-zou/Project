@@ -89,6 +89,16 @@ public class Shownote extends Activity {
 	        String type = path.substring(path.length() - 3, path.length());
 	        Bitmap rbm = null;
 	        if(type.equals("amr")){
+	        	Intent intent1 = new Intent(Shownote.this, Changenote.class);
+//				intent1.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				Bundle bundle1 = new Bundle();
+				bundle1.putString("title", title);
+				bundle1.putString("content", content);
+				bundle1.putString("id", id);
+				intent1.putExtras(bundle1);
+				intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+				startActivity(intent1);
 	    		rbm = BitmapFactory.decodeResource(getResources(), R.drawable.record_icon);
 	    		//Àı∑≈Õº∆¨
 		        rbm = resize(rbm,200);

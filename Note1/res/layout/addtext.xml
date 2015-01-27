@@ -22,20 +22,32 @@
 	</LinearLayout>
 
 	<LinearLayout android:layout_width="fill_parent"
-		android:layout_height="250dp">
-
+		android:layout_height="400dp">"
 		<EditText android:id="@+id/edit2" android:singleLine="false"
 			android:gravity="top" android:layout_width="fill_parent"
-			android:layout_height="fill_parent" android:layout_margin="10dp" 
+			android:layout_height="fill_parent"
+			android:layout_margin="10dp" 
 			android:textColor="#000000"
 			android:scrollbars="vertical"
-			android:maxLines="5"
+			android:hint="请输入内容"
+			android:lineSpacingExtra="5dp"
+			android:inputType="textMultiLine"
 			android:fadeScrollbars="false"
 			/>
 
 		"
 	</LinearLayout>"
 
-	
+	<RelativeLayout android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_margin="10dp">
+
+		<ImageButton android:id="@+id/voice_input"
+			android:layout_width="wrap_content" android:layout_height="85.0dip"
+			android:layout_alignParentTop="true" android:layout_centerHorizontal="true"
+			android:background="@null" android:padding="5.0dip"
+			android:scaleType="fitCenter" android:src="@drawable/record" />
+	</RelativeLayout>
 
 </LinearLayout>
