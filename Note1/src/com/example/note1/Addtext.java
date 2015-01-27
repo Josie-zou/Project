@@ -63,6 +63,7 @@ public class Addtext extends Activity {
 	private EditText editText1;
 	private Button button;
 	private Button buttonsave;
+	private Button buttonback;
 	private ImageButton buttonrecord;
 	private ListView listView;
 
@@ -107,6 +108,7 @@ public class Addtext extends Activity {
 
 			}
 		});
+		
 		buttonsave = (Button) findViewById(R.id.save);
 		buttonsave.setOnClickListener(new OnClickListener() {
 			
@@ -135,6 +137,16 @@ public class Addtext extends Activity {
 
 				startActivity(intent);
 				
+			}
+		});
+		
+		buttonback = (Button) findViewById(R.id.back);
+		buttonback.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Addtext.this.finish();
 			}
 		});
 		

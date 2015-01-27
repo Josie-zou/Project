@@ -36,9 +36,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.MenuItem.OnMenuItemClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.view.View.OnClickListener;
 
 public class Changenote extends Activity {
@@ -51,16 +54,69 @@ public class Changenote extends Activity {
 	private String id;
 	private ActionBar actionBar;
 	private DatabaseManager dManager;
+	private Button buttonsave;
+	private Button buttonback;
+	private ImageButton buttonrecord;
 	//记录editText中的图片，用于单击时判断单击的是那一个图片
-			private List<Map<String,String>> imgList = new ArrayList<Map<String,String>>();
+	private List<Map<String,String>> imgList = new ArrayList<Map<String,String>>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.addtext);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_add);
+		getWindow().setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 		dManager = new DatabaseManager(this);
 
+		buttonsave = (Button) findViewById(R.id.save);
+		buttonsave.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				String titlenew = etitle.getText().toString();
+				String contentnew = econtent.getText().toString();
+
+				dManager.open();
+				dManager.update(id, titlenew, contentnew);
+
+				Intent intent = new Intent(Changenote.this, MainActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				// intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(intent);
+
+				dManager.close();
+				
+			}
+		});
+		
+		
+		buttonback = (Button) findViewById(R.id.back);
+		buttonback.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Changenote.this.finish();
+			}
+		});
+		
+		buttonrecord = (ImageButton) findViewById(R.id.voice_input);
+		buttonrecord.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(Changenote.this, Addvoice.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+				startActivityForResult(intent, 2);
+			}
+		});
+		
+		
 		etitle = (EditText) findViewById(R.id.edit1);
 		econtent = (EditText) findViewById(R.id.edit2);
 		econtent.setOnClickListener(new TextClickEvent());
@@ -333,43 +389,43 @@ public class Changenote extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// TODO Auto-generated method stub
-		MenuItem menuItem = menu.add(0, 0, 0, "sava");
-		MenuItem menuItem2 = menu.add(0, 0, 0, "image");
-
-		menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		menuItem2.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-
-		menuItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				// TODO Auto-generated method stub
-				String titlenew = etitle.getText().toString();
-				String contentnew = econtent.getText().toString();
-
-				dManager.open();
-				dManager.update(id, titlenew, contentnew);
-
-				Intent intent = new Intent(Changenote.this, MainActivity.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				// intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				startActivity(intent);
-
-				dManager.close();
-
-				return false;
-			}
-		});
-
-		// 添加图片的菜单
-		menuItem2.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-		});
+//		MenuItem menuItem = menu.add(0, 0, 0, "sava");
+//		MenuItem menuItem2 = menu.add(0, 0, 0, "image");
+//
+//		menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+//		menuItem2.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+//
+//		menuItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+//
+//			@Override
+//			public boolean onMenuItemClick(MenuItem item) {
+//				// TODO Auto-generated method stub
+//				String titlenew = etitle.getText().toString();
+//				String contentnew = econtent.getText().toString();
+//
+//				dManager.open();
+//				dManager.update(id, titlenew, contentnew);
+//
+//				Intent intent = new Intent(Changenote.this, MainActivity.class);
+//				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//				// intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//				startActivity(intent);
+//
+//				dManager.close();
+//
+//				return false;
+//			}
+//		});
+//
+//		// 添加图片的菜单
+//		menuItem2.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+//
+//			@Override
+//			public boolean onMenuItemClick(MenuItem item) {
+//				// TODO Auto-generated method stub
+//				return false;
+//			}
+//		});
 
 		return super.onCreateOptionsMenu(menu);
 	}

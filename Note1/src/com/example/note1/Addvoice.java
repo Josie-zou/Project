@@ -43,6 +43,7 @@ public class Addvoice extends Activity {
 	private TextView textView;
 	private ImageButton imageButton;
 	private Button buttonsave;
+	private Button buttonback;
 	private int isRecording;
 	private String filepath;
 	private Timer mTimer;
@@ -75,6 +76,16 @@ public class Addvoice extends Activity {
 				
 				Addvoice.this.finish();
 				
+			}
+		});
+		
+		buttonback = (Button) findViewById(R.id.back);
+		buttonback.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Addvoice.this.finish();
 			}
 		});
 		
