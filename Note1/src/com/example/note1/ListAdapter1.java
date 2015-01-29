@@ -17,7 +17,7 @@ public class ListAdapter1 extends ListActivity {
 	public ListAdapter1(Context context, ArrayList<Map<String, Object>> item) {
 		// TODO Auto-generated constructor stub
 		this.listitem1 = item;
-		adapter = new SimpleAdapter(context, item, R.layout.onlytext, new String[]{"title", "content"}, new int[]{R.id.listtitle,R.id.listcontent});
+		adapter = new SimpleAdapter(context, item, R.layout.onlytext, new String[]{"id", "title", "content"}, new int[]{R.id.note_id,R.id.listtitle,R.id.listcontent});
 	}
 	
 	//TODO

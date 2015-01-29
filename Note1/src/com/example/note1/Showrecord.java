@@ -6,10 +6,13 @@ import java.util.TimerTask;
 
 
 
+
+
 import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,6 +22,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Showrecord extends Activity {
 	private String audiopath;
@@ -33,25 +37,25 @@ public class Showrecord extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		
-//		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.showrecord);
-//		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_add);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_add);
 		
-//		Button back = (Button) findViewById(R.id.back);
-//		back.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View arg0) {
-//				if(isplaying == 1){
-//					mediaPlayer.stop();
-//					mediaPlayer.release();
-//				}
-//				Showrecord.this.finish();
-//			}
-//		});
+		Button back = (Button) findViewById(R.id.back);
+		back.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				if(isplaying == 1){
+					mediaPlayer.stop();
+					mediaPlayer.release();
+				}
+				Showrecord.this.finish();
+			}
+		});
 		
-//		Button delete = (Button) findViewById(R.id.save);
-//		delete.setBackgroundResource(R.drawable.delete);
+		Button delete = (Button) findViewById(R.id.save);
+		delete.setBackgroundResource(0);
 		
 		textView = (TextView) findViewById(R.id.time);
 		imageView = (ImageView) findViewById(R.id.player);
@@ -114,6 +118,7 @@ public class Showrecord extends Activity {
 				timer = new Timer();
 				textView.setText("00:00:00");
 				
+				mediaPlayer.setOnCompletionListener(new MediaCompletion());
 				try {
 					mediaPlayer.setDataSource(audiopath);
 					mediaPlayer.prepare();
@@ -150,6 +155,20 @@ public class Showrecord extends Activity {
 				timer.cancel();
 				timer = null;
 			}
+		}
+		
+	}
+	
+	class MediaCompletion implements OnCompletionListener{
+
+		@Override
+		public void onCompletion(MediaPlayer mp) {
+			// TODO Auto-generated method stub
+			isplaying = 0;
+			timer.cancel();
+			timer = null;
+			Toast.makeText(Showrecord.this, "≤•∑≈ÕÍ±œ", Toast.LENGTH_SHORT).show();
+			textView.setText("00:00:00");
 		}
 		
 	}

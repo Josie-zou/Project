@@ -1084,15 +1084,17 @@ containing a value of this type.
         public static final int book=0x7f02005b;
         public static final int delete=0x7f02005c;
         public static final int ic_launcher=0x7f02005d;
-        public static final int mainp=0x7f02005e;
-        public static final int navigationbar_bg=0x7f02005f;
-        public static final int photo=0x7f020060;
-        public static final int record=0x7f020061;
-        public static final int record_icon=0x7f020062;
-        public static final int save=0x7f020063;
-        public static final int siri_button_normal=0x7f020064;
-        public static final int siri_button_running=0x7f020065;
-        public static final int voice_button=0x7f020066;
+        public static final int icon=0x7f02005e;
+        public static final int mainp=0x7f02005f;
+        public static final int mybook=0x7f020060;
+        public static final int navigationbar_bg=0x7f020061;
+        public static final int photo=0x7f020062;
+        public static final int record=0x7f020063;
+        public static final int record_icon=0x7f020064;
+        public static final int save=0x7f020065;
+        public static final int siri_button_normal=0x7f020066;
+        public static final int siri_button_running=0x7f020067;
+        public static final int voice_button=0x7f020068;
     }
     public static final class id {
         public static final int action_bar=0x7f05001c;
@@ -1131,16 +1133,16 @@ containing a value of this type.
         public static final int icon=0x7f05002a;
         public static final int ifRoom=0x7f05000a;
         public static final int image=0x7f050027;
-        public static final int img=0x7f050045;
         public static final int listMode=0x7f050001;
         public static final int list_item=0x7f050029;
-        public static final int listcontent=0x7f050044;
-        public static final int listtitle=0x7f050043;
+        public static final int listcontent=0x7f050045;
+        public static final int listtitle=0x7f050044;
         public static final int listv=0x7f05003c;
         public static final int middle=0x7f050012;
         public static final int never=0x7f050009;
         public static final int none=0x7f050010;
         public static final int normal=0x7f050000;
+        public static final int note_id=0x7f050043;
         public static final int onlyt=0x7f050042;
         public static final int player=0x7f050048;
         public static final int progress_circular=0x7f050018;

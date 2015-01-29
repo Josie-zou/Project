@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+
 import com.note1.db.DatabaseManager;
 
 import android.support.v4.widget.DrawerLayout;
@@ -33,6 +34,8 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 public class MainActivity<ListViewAdapter> extends Activity {
 
@@ -48,8 +51,10 @@ public class MainActivity<ListViewAdapter> extends Activity {
 //	private ActionBar actionBar;
 	private ArrayList<Map<String, Object>> item = new ArrayList<Map<String, Object>>();
 	private Button buttonadd;
+	private TextView note_id;
+	private TextView note_title;
+	private TextView note_content;
 
-	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,47 +79,7 @@ public class MainActivity<ListViewAdapter> extends Activity {
 				
 			}
 		});
-//		button1 = (Button)findViewById(R.id.bt1);
-//		button1.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				Intent intent = new Intent(MainActivity.this, Addtext.class);
-//				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-////				intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-//				startActivity(intent);
-//				
-//				
-//			}
-//		});
-//		
-//		button2 = (Button) findViewById(R.id.bt2);
-//		button2.setOnClickListener( new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				Intent intent = new Intent(MainActivity.this, Addvoice.class);
-//				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//				startActivity(intent);
-////				startActivityForResult(intent, 4);
-//				
-//			}
-//		});
-//		
-//		button3 = (Button) findViewById(R.id.bt3);
-//		button3.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				Intent intent = new Intent( MainActivity.this, Addvideo.class);
-//				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//				startActivity(intent);
-//				
-//			}
-//		});
+
 		listView = (ListView) findViewById(R.id.listv);
 		
 	//	listView.setOnScrollListener((OnScrollListener) this);
@@ -140,15 +105,27 @@ public class MainActivity<ListViewAdapter> extends Activity {
 				//不能从控件上获取数据，只能从给控件的map上提取数据
 				
 				//TODO
-				String id1 = item.get(position).get("id").toString();
-				String title = item.get(position).get("title").toString();
-				String content = item.get(position).get("content").toString();
+//				databaseManager.open();
+				note_id = (TextView) view.findViewById(R.id.note_id);
+				note_title = (TextView) view.findViewById(R.id.listtitle);
+				note_content = (TextView) view.findViewById(R.id.listcontent);
+				String id1 = note_id.getText().toString();
+//				cursor = databaseManager.selectAll();
+//				count = cursor.getCount();
+				Log.i("content", "" + note_content.getText().toString());
+				Log.i("title", "" + note_title.getText().toString());
+//				count - menuInfo.position - 1；
+//				String id1 = item.get(position).get("id").toString();
+//				Log.i("id", id1);
+//				int id1 = count - position ;
+//				String title = item.get(position).get("title").toString();
+//				String content = item.get(position).get("content").toString();
 				
 				Intent intent = new Intent(MainActivity.this, Changenote.class);
 				Bundle bundle = new Bundle();//该类用作携带数据
 				bundle.putString("id", id1);
-				bundle.putString("title", title);
-				bundle.putString("content", content);
+				bundle.putString("title", note_title.getText().toString());
+				bundle.putString("content", note_content.getText().toString());
 				intent.putExtras(bundle);//附带上额外的数据
 				//通过意图传递数据，然后在修改时根据title寻找该条记录
 			//	intent.putExtra("title", title);//把题目和内容传过去
@@ -156,6 +133,7 @@ public class MainActivity<ListViewAdapter> extends Activity {
 //				intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
+//				databaseManager.close();
 			}
 		});
 	/*	listView.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
@@ -182,7 +160,7 @@ public class MainActivity<ListViewAdapter> extends Activity {
 		count = cursor.getCount();//获取个数
 		cursor.moveToLast();//让游标移动到最后一条数据，为的是让我们新保存的的东西保存在最开始的选项。
 	//	cursor.moveToFirst();//将游标移动到第一条数据，使用前必须调用
-		
+//		
 		for (int i = 0; i < count; i++) {
 			Map<String, Object> data = new HashMap<String, Object>();
 	        data.put("id", cursor.getInt(cursor.getColumnIndex("id")));
@@ -193,9 +171,18 @@ public class MainActivity<ListViewAdapter> extends Activity {
 		//	cursor.moveToNext();//让游标指到下一条位置
 			cursor.moveToPrevious();//让游标指到上一条位置
 		}
-	//	cursor.close();
+		cursor.close();
 		
 		databaseManager.close();
+		
+//		databaseManager.open();
+//		cursor = databaseManager.selectAll();
+//        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, 
+//        		R.layout.onlytext,
+//        		cursor, 
+//        		new String[]{"id","title","content"}, new int[]{R.id.note_id,R.id.listtitle,R.id.listcontent});
+//        listView.setAdapter(adapter);
+//        databaseManager.close();
 	}
 
 	 public boolean itemonLongclick()

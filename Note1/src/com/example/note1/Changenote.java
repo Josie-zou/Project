@@ -127,6 +127,8 @@ public class Changenote extends Activity {
 		title = bundle.getString("title");
 		content = bundle.getString("content");
 		id = bundle.getString("id");
+		Log.i("id", id);
+		System.out.println("id:"+id);
 
 		etitle.setText(title);
 //		econtent.setText(content);
@@ -230,7 +232,14 @@ public class Changenote extends Activity {
 				//TODO
 				InsertBitmap(bitmap,480,path);
 			}
-			
+			if (requestCode == 2) {
+				extras = data.getExtras();
+				String path = extras.getString("audio");
+				bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.record_icon);
+				//插入录音图标
+				InsertBitmap(bitmap,200,path);
+				
+			}
 			
 			
 		}
@@ -256,10 +265,11 @@ public class Changenote extends Activity {
 		//添加图片后自动空出两行 
 		econtent.append("\n");
 		
-//		用List记录该录音的位置及所在路径，用于单击事件
+		//用List记录该录音的位置及所在路径，用于单击事件
         Map<String,String> map = new HashMap<String,String>();
         map.put("location", selectionIndex+"-"+(selectionIndex+spannableString.length()));
         map.put("path", imgPath);
+        imgList.add(map);
 //        imgList.add(map);
 	}
 	
@@ -376,9 +386,9 @@ public class Changenote extends Activity {
 						Uri uri = Uri.fromFile(file);
 						intent.setDataAndType(uri, "image/*");*/
 						//使用自定义Activity
-						Intent intent = new Intent(Changenote.this,Showpicture.class);
-						intent.putExtra("imgPath", path);
-						startActivity(intent);
+//						Intent intent = new Intent(Changenote.this,Showpicture.class);
+//						intent.putExtra("imgPath", path);
+//						startActivity(intent);
 					}
 				}
 			}	

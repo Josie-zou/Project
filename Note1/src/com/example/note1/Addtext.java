@@ -88,7 +88,7 @@ public class Addtext extends Activity {
 		button = (Button) findViewById(R.id.addphoto);
 		editText1 = (EditText) findViewById(R.id.edit1);
 		editText2 = (EditText) findViewById(R.id.edit2);
-		actionBar = getActionBar();
+//		actionBar = getActionBar();
 //		actionBar.show();
 		databaseManager = new DatabaseManager(this);// 记得别漏了这个
 		// databaseHelper = new DatabaseHelper(this, "1.db3", null, 1);
@@ -106,6 +106,16 @@ public class Addtext extends Activity {
 				// 选中图片后返回本activity
 				startActivityForResult(intent, 1);
 
+			}
+		});
+		
+		buttonback = (Button) findViewById(R.id.back);
+		buttonback.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Addtext.this.finish();
 			}
 		});
 		
