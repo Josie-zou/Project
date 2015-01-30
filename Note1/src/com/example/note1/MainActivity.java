@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+
 import com.note1.db.DatabaseManager;
 
 import android.support.v4.widget.DrawerLayout;
@@ -12,6 +13,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.R.integer;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -54,6 +57,7 @@ public class MainActivity<ListViewAdapter> extends Activity {
 	private TextView note_id;
 	private TextView note_title;
 	private TextView note_content;
+	private String id;//全局变量，长按时记录下按下的记录，便于删除
 
 	
 	@Override
@@ -147,12 +151,10 @@ public class MainActivity<ListViewAdapter> extends Activity {
 		});*/
 		//TODO
 	//	listView.setOnItemLongClickListener((OnItemLongClickListener) this);
-		itemonLongclick();
-		
-		
+//		itemonLongclick();
+	
+		listView.setOnItemLongClickListener(new itemlongclickevent());
 	}
-	
-	
 
 	public void iniAdapter() {
 		databaseManager.open();
@@ -185,21 +187,82 @@ public class MainActivity<ListViewAdapter> extends Activity {
 //        databaseManager.close();
 	}
 
-	 public boolean itemonLongclick()
-	 {
-		 listView.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
-			
-			@Override
-			public void onCreateContextMenu(ContextMenu menu, View v,
-					ContextMenuInfo menuInfo) {
-				// TODO Auto-generated method stub
+	class itemlongclickevent implements OnItemLongClickListener{
+
+		@Override
+		public boolean onItemLongClick(AdapterView<?> parent, View view,
+				int position, long id) {
+			// TODO Auto-generated method stub
+			note_id = (TextView) view.findViewById(R.id.note_id);
+			MainActivity.this.id = note_id.getText().toString();
+//			final int id1 = Integer.parseInt(note_id.getText().toString());
+			listView.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
 				
-				menu.add("删除");
-			}
-		});
-				return false;
-		 
-	 }
+				@Override
+				public void onCreateContextMenu(ContextMenu menu, View v,
+						ContextMenuInfo menuInfo) {
+					// TODO Auto-generated method stub
+					menu.add("删除");
+					
+				}
+			});
+//			listAdapter1.removeItem(id1);//删除数据
+//			sAdapter.notifyDataSetChanged();//通知数据源，数据已经改变，刷新页面。
+			return false;
+		}
+	
+	}
+	
+//	//简单列表对话框，用于选择操作
+//    public void simpleList(final int item_id){
+//		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.custom_dialog);
+//		alertDialogBuilder.setTitle("");
+//		alertDialogBuilder.setItems(R.array.itemOperation, new android.content.DialogInterface.OnClickListener() {
+//			
+//			@Override
+//			public void onClick(DialogInterface dialog, int which) {
+//				
+//				switch(which){
+//					//编辑
+//					case 0 :
+//						Intent intent = new Intent(MainActivity.this,AddActivity.class);
+//						intent.putExtra("editModel", "update");
+//						intent.putExtra("noteId", item_id);
+//						startActivity(intent);
+//						break;
+//					//删除
+//					case 1 :
+//						dop.create_db();
+//						dop.delete_db(item_id);
+//						dop.close_db();
+//						//刷新列表显示
+//						lv_notes.invalidate();
+//						showNotesList();
+//						break;
+//				}
+//			}
+//		});
+//		alertDialogBuilder.create();
+//		alertDialogBuilder.show();
+//	}
+	
+//	 public boolean itemonLongclick()
+//	 {
+//		 listView.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
+//			
+//			@Override
+//			public void onCreateContextMenu(ContextMenu menu, View v,
+//					ContextMenuInfo menuInfo) {
+//				// TODO Auto-generated method stub
+//				
+//				menu.add("删除");
+//				note_id = (TextView) v.findViewById(R.id.note_id);
+//			    id = note_id.getText().toString();
+//			}
+//		});
+//				return false;
+//		 
+//	 }
 	 
 	 
 	 
@@ -213,10 +276,15 @@ public class MainActivity<ListViewAdapter> extends Activity {
 		switch (item.getItemId()) {
 		case 0:
 			//TODO
-			cursor.moveToPosition(count - menuInfo.position - 1);//因为我是倒叙显示，所以。。。
-			int i = databaseManager.delete(Long.parseLong(cursor.getString(cursor.getColumnIndex("id"))));
+//			cursor = databaseManager.selectAll();
+//			cursor.moveToPosition(count - menuInfo.position - 1);//因为我是倒叙显示，所以。。。
+//			int i = databaseManager.delete(Long.parseLong(cursor.getString(cursor.getColumnIndex("id"))));
 			listAdapter1.removeItem(menuInfo.position);//删除数据
+//			iniAdapter();
+//			Log.i("id", id);
+			databaseManager.delete(Integer.parseInt(id));
 			sAdapter.notifyDataSetChanged();//通知数据源，数据已经改变，刷新页面。
+//			iniAdapter();
 			//删除操作
 			break;
 

@@ -41,6 +41,7 @@ import android.provider.MediaStore;
 import android.provider.MediaStore.Audio.Media;
 import android.text.Editable;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.style.ImageSpan;
 import android.view.Menu;
@@ -56,6 +57,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 //也是增加一条记录，不过这个主要是用来处理页面的设计的
 public class Addtext extends Activity {
@@ -88,6 +90,7 @@ public class Addtext extends Activity {
 		button = (Button) findViewById(R.id.addphoto);
 		editText1 = (EditText) findViewById(R.id.edit1);
 		editText2 = (EditText) findViewById(R.id.edit2);
+		editText2.setOnClickListener(new TextClickEvent());
 //		actionBar = getActionBar();
 //		actionBar.show();
 		databaseManager = new DatabaseManager(this);// 记得别漏了这个
@@ -127,25 +130,31 @@ public class Addtext extends Activity {
 				// TODO Auto-generated method stub
 				titleText = editText1.getText().toString();
 				contentText = editText2.getText().toString();
-				// databaseManager.open();
-				try {
-					databaseManager.open();
-					databaseManager.insert(titleText, contentText);
-					// databaseManager = databaseHelper.getReadableDatabase();
-					// databaseManager.execSQL("insert into 1 values(null,?,?,null)",new
-					// String[]{titleText, contentText});
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if (titleText.equals("") && contentText.equals("")) {
+					Toast.makeText(Addtext.this, "记事不可为空", Toast.LENGTH_SHORT).show();
 				}
-				databaseManager.close();
-				// 让它跳回到主页
-				Intent intent = new Intent(Addtext.this, MainActivity.class);
-				// intent.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
-				// intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				else {
+					// databaseManager.open();
+					try {
+						databaseManager.open();
+						databaseManager.insert(titleText, contentText);
+						// databaseManager = databaseHelper.getReadableDatabase();
+						// databaseManager.execSQL("insert into 1 values(null,?,?,null)",new
+						// String[]{titleText, contentText});
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					databaseManager.close();
+					// 让它跳回到主页
+					Intent intent = new Intent(Addtext.this, MainActivity.class);
+					// intent.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
+					// intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-				startActivity(intent);
+					startActivity(intent);
+				}
+				
 				
 			}
 		});
@@ -311,6 +320,60 @@ public class Addtext extends Activity {
 	        canvas.drawBitmap(bitmap, frameSize + 1, frameSize + 1, paint);
 	 
 	        return bitmapbg;
+		}
+		
+		class TextClickEvent implements OnClickListener{
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Spanned s = (Spanned) editText2.getText();
+				ImageSpan[] imageSpans;
+				imageSpans = s.getSpans(0, s.length(), ImageSpan.class);
+				
+				int selectionStart = editText2.getSelectionStart();
+				for(ImageSpan span : imageSpans){
+					
+					int start = s.getSpanStart(span);
+					int end = s.getSpanEnd(span);
+					//找到图片
+					if(selectionStart >= start && selectionStart < end){
+						//Bitmap bitmap = ((BitmapDrawable)span.getDrawable()).getBitmap();
+						//查找当前单击的图片是哪一个图片
+						//System.out.println(start+"-----------"+end);
+						String path = null;
+						for(int i = 0;i < imgList.size();i++){
+							Map map = imgList.get(i);
+							//找到了
+							if(map.get("location").equals(start+"-"+end)){
+								path = imgList.get(i).get("path");
+								break;
+							}
+						}
+						//接着判断当前图片是否是录音，如果为录音，则跳转到试听录音的Activity，如果不是，则跳转到查看图片的界面
+						//录音，则跳转到试听录音的Activity
+						if(path.substring(path.length()-3, path.length()).equals("amr")){
+							Intent intent = new Intent(Addtext.this,Showrecord.class);
+							intent.putExtra("audioPath", path);
+							startActivity(intent);
+						}
+						//图片，则跳转到查看图片的界面
+						else{
+							//有两种方法，查看图片，第一种就是直接调用系统的图库查看图片，第二种是自定义Activity
+							//调用系统图库查看图片
+							/*Intent intent = new Intent(Intent.ACTION_VIEW);
+							File file = new File(path);
+							Uri uri = Uri.fromFile(file);
+							intent.setDataAndType(uri, "image/*");*/
+							//使用自定义Activity
+//							Intent intent = new Intent(Changenote.this,Showpicture.class);
+//							intent.putExtra("imgPath", path);
+//							startActivity(intent);
+						}
+					}
+				}	
+				
+			}
 		}
 	
 	@Override

@@ -36,6 +36,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Addvoice extends Activity {
 	
@@ -68,13 +69,22 @@ public class Addvoice extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = getIntent();
-				Bundle b = new Bundle();
-				b.putString("audio", filepath);
-				intent.putExtras(b);
-				setResult(RESULT_OK, intent);
+				if (filepath == null) {
+					Toast.makeText(Addvoice.this, "录音不可为空", Toast.LENGTH_SHORT).show();
+				}
+				else if (isRecording == 1) {
+					Toast.makeText(Addvoice.this, "请先停止录制", Toast.LENGTH_LONG).show();
+				}
+				else {
+					Intent intent = getIntent();
+					Bundle b = new Bundle();
+					b.putString("audio", filepath);
+					intent.putExtras(b);
+					setResult(RESULT_OK, intent);
+					
+					Addvoice.this.finish();
+				}
 				
-				Addvoice.this.finish();
 				
 			}
 		});
